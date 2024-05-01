@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  wordpress:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9000:80"  # Puedes cambiar el puerto según tus preferencias
+    volumes:
+      - ./wordpress:/var/www/html  
+      - ./db_vshowcase.sql:/docker-entrypoint-initdb.d/db_script.sql  
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: ""
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_DATABASE: db_vshowcase
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ""
+
+volumes:
+  db_data:
